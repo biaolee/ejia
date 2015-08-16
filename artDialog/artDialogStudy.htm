@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="/Scripts/jquery-1.7.min.js" type="text/javascript"></script>
+    <script src="/Scripts/plugin/artDialog/jquery.artDialog.source.js?skin=blue" type="text/javascript"></script>
+    <script src="/Scripts/plugin/artDialog/iframeTools.source.js" type="text/javascript"></script>
+    <style type="text/css">
+        .mian
+        {
+            width: 980px;
+            height: auto;
+            margin: 0 auto;
+        }
+        .mian ul
+        {
+            list-style: none;
+            padding: 10px;
+        }
+        .mian ul li
+        {
+            height: 28px;
+            line-height: 28px;
+            padding: 6;
+            margin: 6px;
+        }
+        .mian ul li a
+        {
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mian">
+        <ul>
+            <li><a id="popLoginbox">弹出登录框并左右晃动！！</a></li>
+            <li><a id="popTips">弹出提示框2秒后关闭</a></li>
+            <li><a id="popSureBox">弹出确认框</a></li>
+            <li><a id="popSureTips">弹出确认框并提升</a></li>
+            <li><a id="popsbtn">弹出自定义按钮</a></li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#popsbtn").click(function () {
+                var FrameDialog = art.dialog({
+                    id: "propTool",
+                    title: "操作确认",
+                    content: "试用版只能显示少量试题，如想显示全部试题，请对题库进行充值。",
+                    icon: "question",
+                    lock: true,
+                    opacity: 0.5,
+                    button: [{
+                        name: '继续使用',
+                        focus: true,
+                        callback: function () {
+                            window.open(encodeURI("http://www.baidu.com"));
+                        }
+                    }, {
+                        name: "充值",
+                        focus: true,
+                        callback: function () {
+                            //显示当前用户的题库
+                            //TODO
+                            //$("#middel").html("../../UserCenter/jihuo");
+                        }
+                    }]
+                });
+            });
+            $("#popSureTips").click(function () {
+                var dialog = art.dialog.confirm('你确定要删除这掉消息吗？', function () {
+                    art.dialog.tips('正在删除……请稍后！');
+                }, function () {
+                    art.dialog.tips('您取消删除');
+                });
+                dialog.shake && dialog.shake(); // 调用抖动接口
+            });
+
+            $("#popSureBox").click(function () {
+                art.dialog.alert('人品越来越不那么稳定了，请检查！');
+            });
+
+            $("#popTips").click(function () {
+                art.dialog({
+                    title: '盛唐人',
+                    content: '添加题库成功！！',
+                    icon: 'succeed',
+                    fixed: true,
+                    lock: true,
+                    time: 1.5
+                });
+            });
+            $("#popLoginbox").click(function () {
+                var htmlContent = '<p>用户名：</p>'
+    	+ '<input id="txtUName" style="width:15em; padding:4px" />';
+                htmlContent += '<br/><p>密码：</p>'
+    	+ '<input id="txtUPwd" style="width:15em; padding:4px" />';
+
+                var dialog = art.dialog({
+                    title: '盛唐人登录',
+                    content: htmlContent,
+                    fixed: true,
+                    id: 'Fm7',
+                    okVal: '登录',
+                    ok: function () {
+                        var inputUName = document.getElementById('txtUName');
+                        var txtUPwd = document.getElementById('txtUPwd');
+                        if (inputUName.value !== 'admin' && txtUPwd.value !== '123456') {
+                            this.shake && this.shake(); // 调用抖动接口
+                            inputUName.select();
+                            inputUName.focus();
+                            return false;
+                        } else {
+                            //ajax 处理登录
+                            art.dialog({
+                                content: '恭喜你，登录成功！',
+                                icon: 'succeed',
+                                fixed: true,
+                                lock: true,
+                                time: 1.5
+                            });
+                            window.location = "http://www.baidu.com/";
+                        };
+                    },
+                    cancel: true
+                });
+                dialog.shake && dialog.shake(); // 调用抖动接口
+                document.getElementById('txtUName').focus();
+            });
+        });
+    </script>
+</body>
+</html>
